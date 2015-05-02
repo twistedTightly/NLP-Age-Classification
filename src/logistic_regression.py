@@ -105,7 +105,7 @@ class LogisticRegression(object):
 		if guess == age:
 			self.correctGuesses += 1
 
-		return guess, maxScore
+		return guess, maxScore, scores
 
 
 if __name__ == "__main__":
@@ -115,6 +115,7 @@ if __name__ == "__main__":
 		print model.classScores
 	
 	for line in fileinput.input():
-		model.test(line)
+		guess, maxScore, scores = model.test(line)
+		print scores
 
 	print model.correctGuesses / float(model.guessCount)
