@@ -3,6 +3,8 @@
 # NLP Final Project
 # Logistic regression
 
+# Usage: python logistic_regression.py <test data>
+
 import fileinput, math
 
 class LogisticRegression(object):
@@ -109,7 +111,7 @@ class LogisticRegression(object):
 if __name__ == "__main__":
 	model = LogisticRegression(0.09, 25, 0.015)
 	for i in range(model.trainingIterations):
-		model.train('all_posts_train')
+		model.train('../Data/all_posts_train')
 		print model.classScores
 	
 	for line in fileinput.input():
