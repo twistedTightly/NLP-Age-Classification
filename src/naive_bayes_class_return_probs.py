@@ -1,4 +1,5 @@
 #Method 1: Naive Bayes
+#In main in this file is the final bag of words classifier where the classifier returns probabilities and we interpret them to get a final accuracy
 
 import math
 
@@ -159,6 +160,9 @@ if __name__ == "__main__":
 		words = words[1:]
 
 		probs = naive_bayes.decode(words)
+		
+		#Print probabilities- for use in R
+		#print str(probs[0]) + "\t" + str(probs[1]) + "\t" + str(probs[2]) + "\t" + str(probs[3])
 
 		winningIndex = probs.index(max(probs))
 		winningCategory = naive_bayes.categories[winningIndex]
