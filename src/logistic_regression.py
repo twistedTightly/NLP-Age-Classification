@@ -16,6 +16,10 @@ class LogisticRegression(object):
 		# Regularization factor
 		self.C = c
 
+		# Finding single word lines
+		self.totalLines = 0
+		self.singleWdLines = 0
+
 		self.guessCount = 0
 		self.correctGuesses = 0
 
@@ -35,6 +39,15 @@ class LogisticRegression(object):
 
 		# Total weight for this class
 		return self.classScores[c] + lambda_k_w
+
+	# Finding how many single word lines there are
+	# Can be used to only use multi-word lines
+	def countSingleLine(self, tokens):
+		self.totalLines += 1
+		if len(tokens) == 2:
+			self.singleWdLines += 1
+			return True
+		return False
 
 	def train(self, trainingData):
 		for line in fileinput.input(trainingData):
@@ -118,4 +131,4 @@ if __name__ == "__main__":
 		guess, maxScore, scores = model.test(line)
 		print scores
 
-	print model.correctGuesses / float(model.guessCount)
+	print "Accuracy: %f" % (model.correctGuesses / float(model.guessCount) * 100)
