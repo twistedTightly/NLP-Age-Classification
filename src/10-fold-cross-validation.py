@@ -32,7 +32,7 @@ for line in data:
 ### Run a model k times, holding out different data each time ###
 
 def logisticRegression(folds, heldout):
-	model = logistic_regression.LogisticRegression(0.13, 25, 0.015)
+	model = logistic_regression.LogisticRegression(0.08, 25, 0.015)
 	for i in range(model.trainingIterations):
 		# Train on all folds except the heldout fold
 		for f in folds:
