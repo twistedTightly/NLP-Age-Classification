@@ -133,8 +133,8 @@ class naive_bayes:
 
 if __name__ == "__main__":
 	#Set filenames
-	trainFilename = "all_posts_train"
-	testFilename = "all_posts_test"
+	trainFilename = "../Data/all_posts_train"
+	testFilename = "../Data/all_posts_test"
 
 	#Read in training file
 	trainFile = open(trainFilename, 'r')

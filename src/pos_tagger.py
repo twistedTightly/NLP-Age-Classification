@@ -82,13 +82,6 @@ for tag in tagWordCounts:
 	for word in tagWordCounts[tag]:
 		tagWordProbs[tag][word] = float(tagWordCounts[tag][word]+0.001)/(thisTagTotal+vocabSize)
 
-#Print matrix of tag bigram probabilities
-#for sourceTag in tagBigramProbs:
-#	toPrint = sourceTag + "\t"
-#	for destinationTag in tagBigramProbs[sourceTag]:
-#		toPrint = toPrint + destinationTag + " " + str(round(tagBigramProbs[sourceTag][destinationTag], 5)) + "\t" 
-#	print toPrint
-
 print tagVocab
 
 #-------------------------------------------Decoding--------------------------------------------------------
