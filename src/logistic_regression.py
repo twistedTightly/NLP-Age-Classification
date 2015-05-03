@@ -51,6 +51,20 @@ class LogisticRegression(object):
 			return True
 		return False
 
+	def scoreToProb(self, scores):
+		scoreSum = 0
+		for c in self.classScores:
+			scoreSum += scores[c]
+
+		# Hardcoded because order is important
+		probs = []
+		probs.append(scores['10']/scoreSum)
+		probs.append(scores['20']/scoreSum)
+		probs.append(scores['30']/scoreSum)
+		probs.append(scores['40']/scoreSum)
+
+		return probs
+
 	def train(self, trainingData):
 		for line in fileinput.input(trainingData):
 			tokens = line.split(' ')
@@ -125,7 +139,7 @@ class LogisticRegression(object):
 			if guess == age:
 				self.correctGuesses += 1
 
-		return guess, maxScore, scores
+		return guess, maxScore, self.scoreToProb(scores)
 
 
 if __name__ == "__main__":
@@ -139,8 +153,8 @@ if __name__ == "__main__":
 	#model.totalLines = 0
 	
 	for line in fileinput.input():
-		guess, maxScore, scores = model.test(line)
-		print scores
+		guess, maxScore, probs = model.test(line)
+		print probs
 
 	print "Accuracy: %f" % (model.correctGuesses / float(model.guessCount) * 100)
 	print "Percent of data that are single lines: %f" % (model.singleWdLines / float(model.totalLines) * 100)
