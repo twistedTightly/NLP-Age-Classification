@@ -4,7 +4,7 @@
 # k-fold Cross Validation
 
 import random, os, fileinput
-import logistic_regression
+import logistic_regression, pos_tagger_class
 
 ### Divide all data into folds of k ###
 k = 10
@@ -44,6 +44,9 @@ def logisticRegression(folds, heldout):
 		guess, maxScore, probs = model.test(line)
 
 	return model.correctGuesses / float(model.guessCount)
+
+def POSTagger(folds, heldout):
+	model = pos_tagger_class.pos_tagger(folds) # TODO need training data here
 
 logRegAccuracy = 0
 for i in range(k):
