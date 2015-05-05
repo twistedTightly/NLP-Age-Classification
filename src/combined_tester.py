@@ -3,8 +3,8 @@ from naive_bayes_combined import naive_bayes_combined
 
 
 #Set filenames
-trainFilename = "all_posts_train"
-testFilename = "all_posts_test"
+trainFilename = "../Data/all_posts_train"
+testFilename = "../Data/all_posts_test"
 
 #Open training file and read in lines
 trainFile = open(trainFilename)

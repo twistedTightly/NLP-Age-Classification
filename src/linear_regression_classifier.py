@@ -47,13 +47,16 @@ for line in testData:
 	#Calculate linear regression model
 
 	#Straight model, no ridge regression or other multicollinearity corrections- leaves out 40s variables, 43.2% accuracy
-	#predictedAge = 41.4861 - 32.3173*vocab_probs[0] - 22.4564*vocab_probs[1] - 9.166*vocab_probs[2] + 4.2246*pos_probs[0] + 3.2997*pos_probs[1] - 13.55*pos_probs[2]
+	predictedAge = 41.4861 - 32.3173*vocab_probs[0] - 22.4564*vocab_probs[1] - 9.166*vocab_probs[2] + 4.2246*pos_probs[0] + 3.2997*pos_probs[1] - 13.55*pos_probs[2]
 	
 	#Using ridge regression, lambda = 1: 43.2% accuracy
 	#predictedAge = 26.8377018 - 17.8059727*vocab_probs[0] - 7.9473321*vocab_probs[1] + 5.3389428*vocab_probs[2] + 14.5049926*vocab_probs[3] + 4.3542027*pos_probs[0] + 3.4327589*pos_probs[1] - 13.3937298*pos_probs[2] + 0.1450386*pos_probs[3]
 
 	#LASSO model
-	predictedAge = -9.860902*vocab_probs[0] + 13.289757*vocab_probs[2] + 22.456358*vocab_probs[3] + 4.224565*pos_probs[0] + 3.299685*pos_probs[1] - 13.549970*pos_probs[2]
+	#predictedAge = -9.860902*vocab_probs[0] + 13.289757*vocab_probs[2] + 22.456358*vocab_probs[3] + 4.224565*pos_probs[0] + 3.299685*pos_probs[1] - 13.549970*pos_probs[2]
+
+	#Model with only vocabulary
+	#predictedAge = 40.4623 - 31.9016*vocab_probs[0] - 22.4249*vocab_probs[1] - 10.3633*vocab_probs[2] 
 
 	#print predictedAge
 
