@@ -65,54 +65,53 @@ class LogisticRegression(object):
 
 		return probs
 
-	def train(self, trainingData):
-		for line in fileinput.input(trainingData):
-			tokens = line.split(' ')
-			age = tokens.pop(0)
+	def train(self, line):
+		tokens = line.split(' ')
+		age = tokens.pop(0)
 
-			if not self.countSingleLine(tokens) or self.includeSingleLines:
+		if not self.countSingleLine(tokens) or self.includeSingleLines:
 
-				#l2 Regularization
+			#l2 Regularization
+			for token in tokens:
+				word = token.split('/')[0]
+				for c in self.classScores:
+					if word not in self.wordWeights[c]:
+						self.wordWeights[c][word] = 0
+					self.wordWeights[c][word] = self.wordWeights[c][word]*(1-self.eta*self.C)
+
+			# Calculate the score for each class,
+			# make a guess, and find z
+			classGuess = ('', -10000)
+			z = 0
+			scores = dict()
+			for c in self.classScores:
+				scores[c] = self.weightMessage(tokens, c)
+
+				# See if this guess is higher than the previous max
+				# Update class guess and score if so
+				if scores[c] > classGuess[1]:
+					classGuess = (c, scores[c])
+
+				z += math.exp(scores[c])
+
+			# Calculate actual P(k|d) for each class
+			if z == 0:
+				z = 0.001
+			probs = dict()
+			for c in self.classScores:
+				probs[c] = math.exp(scores[c]) / float(z)
+
+			# Update class and word scores
+			self.classScores[age] += self.eta
+			for c in self.classScores:
+				# Update classes
+				self.classScores[c] -= probs[c] * self.eta
+				# Update words
 				for token in tokens:
 					word = token.split('/')[0]
-					for c in self.classScores:
-						if word not in self.wordWeights[c]:
-							self.wordWeights[c][word] = 0
-						self.wordWeights[c][word] = self.wordWeights[c][word]*(1-self.eta*self.C)
-
-				# Calculate the score for each class,
-				# make a guess, and find z
-				classGuess = ('', -10000)
-				z = 0
-				scores = dict()
-				for c in self.classScores:
-					scores[c] = self.weightMessage(tokens, c)
-
-					# See if this guess is higher than the previous max
-					# Update class guess and score if so
-					if scores[c] > classGuess[1]:
-						classGuess = (c, scores[c])
-
-					z += math.exp(scores[c])
-
-				# Calculate actual P(k|d) for each class
-				if z == 0:
-					z = 0.001
-				probs = dict()
-				for c in self.classScores:
-					probs[c] = math.exp(scores[c]) / float(z)
-
-				# Update class and word scores
-				self.classScores[age] += self.eta
-				for c in self.classScores:
-					# Update classes
-					self.classScores[c] -= probs[c] * self.eta
-					# Update words
-					for token in tokens:
-						word = token.split('/')[0]
-						self.wordWeights[c][word] -= probs[c] * self.eta
-						if c == age:
-							self.wordWeights[c][word] += probs[c] * self.eta
+					self.wordWeights[c][word] -= probs[c] * self.eta
+					if c == age:
+						self.wordWeights[c][word] += probs[c] * self.eta
 
 	# Run on one line at a time
 	# Output class and probability that it is that class
@@ -145,7 +144,8 @@ class LogisticRegression(object):
 if __name__ == "__main__":
 	model = LogisticRegression(0.09, 25, 0.015)
 	for i in range(model.trainingIterations):
-		model.train('../Data/all_posts_train')
+		for line in fileinput.input('../Data/all_posts_train'):
+			model.train(line)
 		#print model.classScores
 
 	#print "Percent of data that are single lines: %f" % (model.singleWdLines / float(model.totalLines) * 100)
