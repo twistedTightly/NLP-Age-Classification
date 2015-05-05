@@ -1,4 +1,4 @@
-#Method 3: POS tagging with naive bayes bigrams classifier
+#Combined bag of words: word unigrams and bigrams plus POS n-grams, all in a naive bayes classifier
 
 import math
 
@@ -56,6 +56,29 @@ class naive_bayes_combined:
 				categoryWordCounts[category] += 50
 				vocabSet.add(word)
 
+			#Count bigrams
+			prevWord = words[0].split("/")[0]
+			for word in words[1:]:
+				parts = word.split("/")
+	
+				#Parse to get the actual word
+				if len(parts) != 3:
+					continue
+				word = parts[0]
+				pos = parts[1]
+				sentencePart = parts[2]
+
+				bigram = prevWord + " " + word
+
+				if bigram not in wordCounts[category]:
+					wordCounts[category][bigram] = 0
+
+				wordCounts[category][bigram] += 50
+				categoryWordCounts[category] += 50
+				vocabSet.add(bigram)
+
+				prevWord = word
+
 			#Construct tag sequence
 			tagSequence = ["<s>"]
 			for word in words:
@@ -98,7 +121,7 @@ class naive_bayes_combined:
 				vocabSet.add(tagNGram)
 
 		#Set up smoothing
-		delta = 50
+		delta = 100
 		vocabSize = len(vocabSet)
 
 		#Calculate probabilities for each category
@@ -156,6 +179,7 @@ class naive_bayes_combined:
 		for category in categories:
 			thisLineLogProb[category] = 0	
 
+			#Count word unigrams
 			for word in words:
 				parts = word.split("/")
 
@@ -173,6 +197,28 @@ class naive_bayes_combined:
 					thisWordProb = unknownWordProb[category]
 				thisLineLogProb[category] += math.log10(thisWordProb)
 
+			#Count bigrams
+			prevWord = words[0].split("/")[0]
+			for word in words[1:]:
+				parts = word.split("/")
+	
+				#Parse to get the actual word
+				if len(parts) != 3:
+					continue
+				word = parts[0]
+				pos = parts[1]
+				sentencePart = parts[2]
+
+				bigram = prevWord + " " + word
+
+				#Increment probability
+				if bigram in wordProbs[category]:
+					thisWordProb = wordProbs[category][bigram]
+				else:
+					thisWordProb = unknownWordProb[category]
+				thisLineLogProb[category] += math.log10(thisWordProb)
+
+			#Count tag n-grams
 			for tagNGram in tagNGrams:
 				#Increment probability
 				if tagNGram in wordProbs[category]:
