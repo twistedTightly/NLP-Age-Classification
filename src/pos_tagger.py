@@ -3,8 +3,8 @@
 import collections, math
 
 #Set filenames
-trainFilename = "all_posts_train"
-testFilename = "all_posts_test"
+trainFilename = "../Data/all_posts_train"
+testFilename = "../Data/all_posts_test"
 
 #----------------------------------------Training-----------------------------------
 
