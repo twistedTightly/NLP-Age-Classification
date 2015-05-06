@@ -1,4 +1,4 @@
-#Method 3: POS tagging with naive bayes bigrams classifier
+#Method 3: POS tagging with naive bayes trigrams and 4-grams classifier
 
 import math
 
