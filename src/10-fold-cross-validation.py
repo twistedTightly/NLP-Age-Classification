@@ -4,9 +4,15 @@
 # k-fold Cross Validation
 
 import random, os, fileinput
-import logistic_regression, pos_tagger_class
+import logistic_regression
+import sys
 
-### Divide all data into folds of k ###
+###################
+###
+### Divide all data into folds of k
+###
+###################
+
 k = 10
 
 # Assign each line a random number and sort based on those numbers
@@ -29,8 +35,13 @@ for line in data:
 	i += 1
 
 
-### Run a model k times, holding out different data each time ###
+###################
+###
+### Run a model k times, holding out different data each time 
+###
+###################
 
+# LOGISTIC REGRESSION
 def logisticRegression(folds, heldout):
 	model = logistic_regression.LogisticRegression(0.08, 25, 0.015)
 	for i in range(model.trainingIterations):
@@ -45,11 +56,10 @@ def logisticRegression(folds, heldout):
 
 	return model.correctGuesses / float(model.guessCount)
 
-def POSTagger(folds, heldout):
-	model = pos_tagger_class.pos_tagger(folds) # TODO need training data here
-
+# Run model
 logRegAccuracy = 0
 for i in range(k):
+	pass
 	accuracy = logisticRegression(folds, i)
 	print accuracy
 	logRegAccuracy += accuracy
@@ -59,6 +69,11 @@ logRegAccuracy /= k
 print "Logisitic regression: %f" % (logRegAccuracy)
 
 
-### Delete all data folds ###
+###################
+###
+### Delete all data folds
+###
+###################
+
 for f in folds:
 	os.remove(f.name)
